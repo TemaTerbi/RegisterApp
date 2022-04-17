@@ -8,7 +8,6 @@ class FormPage extends StatefulWidget {
 }
 
 class _FormPageState extends State<FormPage> {
-
   final _nameConroller = TextEditingController();
   final _emailConroller = TextEditingController();
   final _passlConroller = TextEditingController();
@@ -115,6 +114,7 @@ class _FormPageState extends State<FormPage> {
                   icon: Icon(Icons.visibility),
                 ),
               ),
+              validator: _validatePass,
             ),
             SizedBox(height: 30),
             TextFormField(
@@ -139,6 +139,7 @@ class _FormPageState extends State<FormPage> {
                   borderSide: BorderSide(color: Colors.cyan),
                 ),
               ),
+              validator: _validatePass,
             ),
             SizedBox(height: 30),
             RaisedButton(
@@ -150,6 +151,16 @@ class _FormPageState extends State<FormPage> {
               textColor: Colors.white,
               elevation: 10,
             ),
+            SizedBox(height: 5,),
+            RaisedButton(
+              onPressed: () {
+                _cleanForm();
+              },
+              child: Text('Отчистить форму'),
+              color: Colors.redAccent,
+              textColor: Colors.white,
+              elevation: 10,
+            ),
           ],
         ),
       ),
@@ -157,30 +168,48 @@ class _FormPageState extends State<FormPage> {
   }
 
   void _submitRegistration() {
-    if (_keyForm.currentState!.validate()){
+    if (_keyForm.currentState!.validate()) {
       print('Форма валидная');
       print('Имя: ${_nameConroller.text}');
       print('Почта: ${_emailConroller.text}');
     }
-    
   }
 
-  String? _validateName(value){
+  void _cleanForm(){
+    _nameConroller.clear();
+    _emailConroller.clear();
+    _passlConroller.clear();
+    _passConfirmlConroller.clear();
+  }
+
+  String? _validateName(value) {
     final _nameExp = RegExp(r'^[А-яа-я]+$');
-    if(value.isEmpty){
+    if (value.isEmpty) {
       return 'Нужно обязательно заполнить имя!';
-    } else if (!_nameExp.hasMatch(value)){
+    } else if (!_nameExp.hasMatch(value)) {
       return 'Вводите только буквы!';
     } else {
       return null;
     }
   }
 
-  String? _validateEmail(value){
-    if(value.isEmpty){
+  String? _validateEmail(value) {
+    if (value.isEmpty) {
       return 'Нужно обязательно заполнить почту';
-    } else if (!_emailConroller.text.contains('@')){
+    } else if (!_emailConroller.text.contains('@')) {
       return 'Неверный формат почты!';
+    } else {
+      return null;
+    }
+  }
+
+  String? _validatePass(value) {
+    if (value.isEmpty) {
+      return 'Нужно обязательно заполнить пароль';
+    } else if (_passlConroller.text != _passConfirmlConroller.text) {
+      return 'Пароли не совпадают';
+    } else if (_passlConroller.text.length != 10) {
+      return 'Нужно 10 символов!';
     } else {
       return null;
     }
