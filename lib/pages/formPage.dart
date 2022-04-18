@@ -151,7 +151,9 @@ class _FormPageState extends State<FormPage> {
               textColor: Colors.white,
               elevation: 10,
             ),
-            SizedBox(height: 5,),
+            SizedBox(
+              height: 5,
+            ),
             RaisedButton(
               onPressed: () {
                 _cleanForm();
@@ -175,7 +177,7 @@ class _FormPageState extends State<FormPage> {
     }
   }
 
-  void _cleanForm(){
+  void _cleanForm() {
     _nameConroller.clear();
     _emailConroller.clear();
     _passlConroller.clear();
