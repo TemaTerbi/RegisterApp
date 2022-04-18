@@ -170,10 +170,22 @@ class _FormPageState extends State<FormPage> {
   }
 
   void _submitRegistration() {
+    final snackBar = SnackBar(
+      content: Text(
+        'В форме допущены ошибки! Исправьте их!',
+        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+      ),
+      backgroundColor: Colors.redAccent,
+      duration: Duration(seconds: 5),
+      elevation: 35,
+      padding: EdgeInsets.all(20),
+    );
     if (_keyForm.currentState!.validate()) {
       print('Форма валидная');
       print('Имя: ${_nameConroller.text}');
       print('Почта: ${_emailConroller.text}');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -185,10 +197,11 @@ class _FormPageState extends State<FormPage> {
   }
 
   String? _validateName(value) {
-    final _nameExp = RegExp(r'^[А-яа-я]+$');
+    final _nameExpRu = RegExp(r'^[А-яа-я]+$');
+    final _nameExpEn = RegExp(r'^[A-za-z]+$');
     if (value.isEmpty) {
       return 'Нужно обязательно заполнить имя!';
-    } else if (!_nameExp.hasMatch(value)) {
+    } else if (!_nameExpRu.hasMatch(value) && !_nameExpEn.hasMatch(value)) {
       return 'Вводите только буквы!';
     } else {
       return null;
