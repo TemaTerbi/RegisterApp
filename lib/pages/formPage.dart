@@ -38,6 +38,7 @@ class _FormPageState extends State<FormPage> {
           padding: EdgeInsets.all(20),
           children: [
             TextFormField(
+              autofocus: true,
               controller: _nameConroller,
               decoration: InputDecoration(
                 labelText: 'Имя',
@@ -169,6 +170,39 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
+  void showAlertDialog(BuildContext context) {
+    AlertDialog _alertDialog = AlertDialog(
+      title: Row(
+        children: [
+          Text('Спасибо за регистрацию '),
+          Text(
+            _nameConroller.text + '!',
+            style: TextStyle(
+                color: Colors.greenAccent,
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+      elevation: 35,
+      actions: [
+        FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Ok'),
+          color: Colors.greenAccent,
+        ),
+      ],
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return _alertDialog;
+        });
+  }
+
   void _submitRegistration() {
     final snackBar = SnackBar(
       content: Text(
@@ -181,6 +215,7 @@ class _FormPageState extends State<FormPage> {
       padding: EdgeInsets.all(20),
     );
     if (_keyForm.currentState!.validate()) {
+      showAlertDialog(context);
       print('Форма валидная');
       print('Имя: ${_nameConroller.text}');
       print('Почта: ${_emailConroller.text}');
